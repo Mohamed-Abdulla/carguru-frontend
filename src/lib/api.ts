@@ -1,6 +1,6 @@
 import { AnalyticsStats, Car, RecommendResult, RecommendationPreferences } from "./types";
 
-const API_BASE = process.env.NEXT_PUBLIC_API_URL || "";
+const API_BASE = typeof window === "undefined" ? process.env.INTERNAL_API_URL || "http://129.154.249.140:3003" : ""; // browser uses Vercel rewrite
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${API_BASE}${path}`, {

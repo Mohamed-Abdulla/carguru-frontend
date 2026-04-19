@@ -1,26 +1,25 @@
-import { Metadata } from "next";
-import { notFound } from "next/navigation";
-import Image from "next/image";
-import Link from "next/link";
-import Navbar from "@/components/Navbar";
+import CarImage from "@/components/CarImage";
 import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import { getCarById } from "@/lib/api";
 import {
   ArrowLeft,
-  Shield,
-  Fuel,
-  Zap,
-  Settings,
-  Users,
-  Star,
-  MessageSquare,
-  Wrench,
-  TrendingUp,
   CheckCircle2,
-  XCircle,
+  Fuel,
+  MessageSquare,
   Palette,
+  Settings,
+  Shield,
+  Star,
+  TrendingUp,
+  Users,
+  Wrench,
+  XCircle,
+  Zap,
 } from "lucide-react";
-import CarImage from "@/components/CarImage";
+import { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
 
 interface Props {
   params: Promise<{ id: string }>;
@@ -63,18 +62,10 @@ export default async function CarDetailPage({ params }: Props) {
   }
 
   const efficiency =
-    car.fuel_type === "Electric"
-      ? `${car.range_km} km range`
-      : car.mileage_kmpl
-        ? `${car.mileage_kmpl} kmpl`
-        : "N/A";
+    car.fuel_type === "Electric" ? `${car.range_km} km range` : car.mileage_kmpl ? `${car.mileage_kmpl} kmpl` : "N/A";
 
   const safetyColor =
-    car.safety_rating >= 5
-      ? "text-emerald-400"
-      : car.safety_rating >= 4
-        ? "text-blue-400"
-        : "text-amber-400";
+    car.safety_rating >= 5 ? "text-emerald-400" : car.safety_rating >= 4 ? "text-blue-400" : "text-amber-400";
 
   return (
     <>
@@ -95,14 +86,14 @@ export default async function CarDetailPage({ params }: Props) {
             <div className="space-y-6">
               <div className="relative h-72 sm:h-96 rounded-2xl overflow-hidden bg-muted">
                 {car.image_url ? (
-                <CarImage
-                  src={car.image_url}
-                  alt={`${car.make} ${car.model}`}
-                  fill
-                  className="object-cover"
-                  unoptimized
-                  priority
-                />
+                  <CarImage
+                    src={car.image_url}
+                    alt={`${car.make} ${car.model}`}
+                    fill
+                    className="object-cover"
+                    unoptimized
+                    priority
+                  />
                 ) : (
                   <div className="h-full flex items-center justify-center text-muted-foreground">
                     <Zap className="h-16 w-16 opacity-20" />
@@ -170,10 +161,10 @@ export default async function CarDetailPage({ params }: Props) {
               {/* Title + Price */}
               <div>
                 <p className="text-sm text-muted-foreground font-medium uppercase tracking-wider mb-1">{car.make}</p>
-                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1">
-                  {car.model}
-                </h1>
-                <p className="text-muted-foreground text-sm mb-4">{car.variant} · {car.year}</p>
+                <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1">{car.model}</h1>
+                <p className="text-muted-foreground text-sm mb-4">
+                  {car.variant} · {car.year}
+                </p>
 
                 <div className="flex flex-wrap items-center gap-4 mb-6">
                   <span className="text-4xl font-black gradient-text">₹{car.price_lakh}L</span>
@@ -194,7 +185,10 @@ export default async function CarDetailPage({ params }: Props) {
                         />
                       ))}
                     </div>
-                    <p className="text-2xl font-extrabold mt-1">{car.user_rating}<span className="text-sm text-muted-foreground font-normal">/5</span></p>
+                    <p className="text-2xl font-extrabold mt-1">
+                      {car.user_rating}
+                      <span className="text-sm text-muted-foreground font-normal">/5</span>
+                    </p>
                   </div>
                   <div className="border-l border-border pl-4">
                     <p className="text-2xl font-extrabold">{car.review_count.toLocaleString()}</p>
@@ -219,9 +213,7 @@ export default async function CarDetailPage({ params }: Props) {
                   <SpecItem icon={Settings} label="Transmission" value={car.transmission} />
                   <SpecItem icon={Users} label="Seating" value={`${car.seats} seats`} />
                   <SpecItem icon={Settings} label="Body Type" value={car.body_type} />
-                  {car.engine_cc && (
-                    <SpecItem icon={Settings} label="Engine" value={`${car.engine_cc} cc`} />
-                  )}
+                  {car.engine_cc && <SpecItem icon={Settings} label="Engine" value={`${car.engine_cc} cc`} />}
                   <SpecItem icon={TrendingUp} label="Ground Clearance" value={`${car.ground_clearance_mm} mm`} />
                   <SpecItem icon={Wrench} label="Service/Yr" value={`₹${car.service_cost_annual.toLocaleString()}`} />
                   <SpecItem icon={Settings} label="Boot Space" value={`${car.boot_space_litres}L`} />
@@ -233,7 +225,10 @@ export default async function CarDetailPage({ params }: Props) {
                 <h2 className="text-lg font-bold">Best suited for</h2>
                 <div className="flex flex-wrap gap-2">
                   {car.use_case.map((uc) => (
-                    <span key={uc} className="rounded-full bg-primary/10 border border-primary/25 px-3 py-1 text-xs font-medium text-primary capitalize">
+                    <span
+                      key={uc}
+                      className="rounded-full bg-primary/10 border border-primary/25 px-3 py-1 text-xs font-medium text-primary capitalize"
+                    >
                       {uc.replace(/_/g, " ")}
                     </span>
                   ))}
