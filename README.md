@@ -1,24 +1,50 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CarGuru Frontend
 
-## Getting Started
+An AI-powered car research assistant built with Next.js, Framer Motion, and ElevenLabs.
 
-First, run the development server:
+## 🚀 Setup & Installation
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+### 1. Prerequisites
+- Node.js 20+
+- npm or yarn
+- ElevenLabs Agent ID (for voice features)
+
+### 2. Environment Variables
+Create a `.env` file in the root of the `frontend` directory:
+
+```env
+# Backend API URL (for production/docker use localhost or specific IP)
+NEXT_PUBLIC_API_URL=http://localhost:3003/api
+
+# ElevenLabs Configuration
+NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID=your_agent_id_here
 ```
+
+### 3. Local Development
+```bash
+# Install dependencies
+npm install
+
+# Run the development server
+npm run dev
+```
+Open [http://localhost:3000](http://localhost:3000) to see the result.
+
+### 4. Docker Usage
+You can run the frontend as part of the full stack from the root directory:
+```bash
+# In the root (carguru) project folder
+docker-compose up -d frontend
+```
+
+## 🛠 Features
+- **Voice Assistant**: Integrated ElevenLabs Conversational AI for natural voice exploration.
+- **Language Support**: Seamlessly switch between English, Hindi, and Tamil.
+- **Premium UI**: Framer Motion animations and glass-morphism design.
+- **Micro-Interactions**: Custom buttons and reactive components for a premium feel.
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
 
