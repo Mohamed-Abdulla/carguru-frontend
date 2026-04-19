@@ -12,9 +12,9 @@ const QUICK_LINKS = [
 
 const SOCIAL = [
   { href: "https://x.com", icon: ExternalLink, label: "X" },
-  { href: "https://linkedin.com", icon: Globe, label: "LinkedIn" },
-  { href: "mailto:hello@carguru.in", icon: Mail, label: "Email" },
-  { href: "https://github.com", icon: Code, label: "GitHub" },
+  { href: "https://www.linkedin.com/in/mohamed-abdulla-a4084922a/", icon: Globe, label: "LinkedIn" },
+  { href: "mailto:moahmedabdulla.web@gmail.in", icon: Mail, label: "Email" },
+  { href: "https://github.com/Mohamed-Abdulla/carguru", icon: Code, label: "GitHub" },
 ];
 
 
@@ -80,10 +80,7 @@ export default function Footer() {
               About
             </h3>
             <div className="space-y-3 text-sm text-muted-foreground">
-              <p>Built for CarDekho Group — a Take-Home Assignment showcasing AI-native product thinking.</p>
-              <p className="text-xs">
-                Dataset: 35 real Indian market cars · Powered by a custom weighted recommendation engine.
-              </p>
+              <p>India&apos;s smartest AI car research platform. Go from confused to confident in minutes.</p>
             </div>
           </div>
         </div>
@@ -91,7 +88,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-muted-foreground">
           <p>© {new Date().getFullYear()} CarGuru. Built with ❤️ for car buyers everywhere.</p>
-          <p>Next.js · TypeScript · PostgreSQL · Tailwind CSS</p>
+          <p>Developed by Mohamed</p>
         </div>
       </div>
     </footer>
