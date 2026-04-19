@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  carguru-frontend:
+    container_name: carguru-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID: ${NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID}
+        NEXT_PUBLIC_TELEGRAM_API_URL: ${NEXT_PUBLIC_TELEGRAM_API_URL}
+
+    ports:
+      - "3000:3000"
+
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      HOSTNAME: 0.0.0.0
+
+    restart: unless-stopped
+
+    # optional but useful
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
