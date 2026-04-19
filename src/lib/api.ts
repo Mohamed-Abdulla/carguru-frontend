@@ -1,5 +1,6 @@
-import { Car, ScoredCar, RecommendResult, RecommendationPreferences, AnalyticsStats } from "./types";
+import { AnalyticsStats, Car, RecommendResult, RecommendationPreferences } from "./types";
 
+console.log(process.env.NEXT_PUBLIC_API_URL)
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3003";
 
 async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
