@@ -2,8 +2,15 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Enable standalone output if not already set in next.config.ts
-ENV NEXT_OUTPUT_STANDALONE=true
+# Accept build arguments for Next.js environment variables
+ARG NEXT_PUBLIC_API_URL
+ARG NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID
+ARG NEXT_PUBLIC_TELEGRAM_API_URL
+
+# Set them as environment variables for the build process
+ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
+ENV NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID=$NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID
+ENV NEXT_PUBLIC_TELEGRAM_API_URL=$NEXT_PUBLIC_TELEGRAM_API_URL
 
 COPY package*.json ./
 RUN npm ci
@@ -18,7 +25,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Copy necessary files from builder
-# Next.js standalone output folders
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
