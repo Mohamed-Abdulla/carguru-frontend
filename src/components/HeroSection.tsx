@@ -71,7 +71,7 @@ export default function HeroSection() {
         <div className="glass-card rounded-2xl p-6 sm:p-8 max-w-2xl mx-auto">
           {/* Language selector */}
           <div className="flex items-center justify-between mb-5">
-            <p className="text-sm font-medium text-muted-foreground">Talk to CarGuru AI</p>
+            <p className="text-sm font-medium text-muted-foreground">Talk to CarGuru AI by tapping the button below</p>
 
             <div className="relative">
               <button
