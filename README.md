@@ -12,11 +12,11 @@ An AI-powered car research assistant built with Next.js, Framer Motion, and Elev
 
 ### 2. Environment Variables
 
-Create a `.env` file in the root of the `frontend` directory:
+Create a `.env` file in the root of the `carguru-frontend` directory:
 
 ```env
-# Backend API URL (for production/docker use localhost or specific IP)
-NEXT_PUBLIC_API_URL=http://localhost:3003/api
+# Backend API URL (Base URL, do not include /api)
+NEXT_PUBLIC_API_URL=http://localhost:3003
 
 # ElevenLabs Configuration
 NEXT_PUBLIC_ELEVEN_LABS_AGENT_ID=your_agent_id_here
@@ -32,18 +32,15 @@ npm install
 npm run dev
 ```
 
-### 4. Docker Usage
+### 4. Docker & Standalone Mode
 
-You can run the frontend as part of the full stack from the root directory:
+This project is configured to build in **standalone** mode (see `next.config.ts`), which is ideal for Docker environments. The Dockerfile multi-stage build produces a minimal production image.
 
-```bash
-# In the root (carguru) project folder
-docker compose up -d carguru_frontend
-```
+For deployment to **Vercel**, the standalone mode is automatically disabled via environment detection to ensure compatibility with Vercel's serverless infrastructure.
 
 ## 🛠 Features
 
 - **Voice Assistant**: Integrated ElevenLabs Conversational AI for natural voice exploration.
+- **Client-Side Fetching**: Stats and Popular sections use client-side fetching to ensure compatibility with Docker `localhost` resolution.
 - **Language Support**: Seamlessly switch between English, Hindi, and Tamil.
 - **Premium UI**: Framer Motion animations and glass-morphism design.
-- **Micro-Interactions**: Custom buttons and reactive components for a premium feel.
