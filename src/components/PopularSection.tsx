@@ -1,16 +1,53 @@
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
 import { getPopular } from "@/lib/api";
+import { Car } from "@/lib/types";
 import CarCard from "./CarCard";
 import { TrendingUp } from "lucide-react";
 import Link from "next/link";
 import AnimatedGrid from "./AnimatedGrid";
 
-export default async function PopularSection() {
-  let cars = [];
-  try {
-    cars = await getPopular(6);
-  } catch {
-    return null;
+export default function PopularSection() {
+  const [cars, setCars] = useState<Car[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getPopular(6);
+        setCars(data);
+      } catch (err) {
+        console.error("Failed to fetch popular cars:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
+
+  // ✅ ALWAYS call hooks before any return
+  const carCards = useMemo(() => {
+    return cars.map((car, i) => (
+      <div key={car.id} className="relative h-full">
+        {i < 3 && (
+          <div className="absolute -top-2 -left-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-black shadow-lg">
+            #{i + 1}
+          </div>
+        )}
+        <CarCard car={car} />
+      </div>
+    ));
+  }, [cars]);
+
+  // ✅ now safe to conditionally return
+  if (loading) {
+    return (
+      <div className="py-16 flex items-center justify-center text-muted-foreground text-sm">Loading popular cars…</div>
+    );
   }
+
+  if (cars.length === 0) return null;
 
   return (
     <section id="popular" className="py-24 bg-muted/20 scroll-mt-16">
@@ -22,12 +59,8 @@ export default async function PopularSection() {
               <TrendingUp className="h-3 w-3" />
               Popular Right Now
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              What buyers are loving
-            </h2>
-            <p className="text-muted-foreground mt-2 text-sm">
-              Ranked by verified buyer reviews
-            </p>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">What buyers are loving</h2>
+            <p className="text-muted-foreground mt-2 text-sm">Ranked by verified buyer reviews</p>
           </div>
           <Link
             href="/cars"
@@ -38,19 +71,7 @@ export default async function PopularSection() {
           </Link>
         </div>
 
-        {/* Cards grid */}
-        <AnimatedGrid>
-          {cars.map((car, i) => (
-            <div key={car.id} className="relative h-full">
-              {i < 3 && (
-                <div className="absolute -top-2 -left-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-black shadow-lg">
-                  #{i + 1}
-                </div>
-              )}
-              <CarCard car={car} />
-            </div>
-          ))}
-        </AnimatedGrid>
+        <AnimatedGrid>{carCards}</AnimatedGrid>
       </div>
     </section>
   );

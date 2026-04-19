@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { SlidersHorizontal, Loader2, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import CarCard from "./CarCard";
@@ -25,7 +25,7 @@ const USE_CASE_OPTIONS = [
   { value: "daily_commute", label: "Daily Commute" },
 ];
 
-function ToggleChip({
+const ToggleChip = React.memo(function ToggleChip({
   label,
   selected,
   onToggle,
@@ -51,7 +51,7 @@ function ToggleChip({
       {label}
     </motion.button>
   );
-}
+});
 
 export default function ShortlistSection() {
   const [budgetMax, setBudgetMax] = useState(30);
@@ -67,11 +67,11 @@ export default function ShortlistSection() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  function toggle(arr: string[], val: string, setArr: (a: string[]) => void) {
+  const toggle = useCallback((arr: string[], val: string, setArr: (a: string[]) => void) => {
     setArr(arr.includes(val) ? arr.filter((x) => x !== val) : [...arr, val]);
-  }
+  }, []);
 
-  async function handleSubmit() {
+  const handleSubmit = useCallback(async () => {
     setLoading(true);
     setError(null);
     setResults(null);
@@ -93,7 +93,18 @@ export default function ShortlistSection() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [budgetMin, budgetMax, fuels, bodies, priorities, useCases, transmission, seats]);
+
+  const handleReset = useCallback(() => {
+    setFuels([]);
+    setBodies([]);
+    setPriorities([]);
+    setUseCases([]);
+    setTransmission("");
+    setSeats(0);
+    setBudgetMax(30);
+    setResults(null);
+  }, []);
 
   return (
     <section id="shortlist" className="py-24 scroll-mt-16">
@@ -238,7 +249,7 @@ export default function ShortlistSection() {
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-between items-center">
             <button
               id="filter-reset-btn"
-              onClick={() => { setFuels([]); setBodies([]); setPriorities([]); setUseCases([]); setTransmission(""); setSeats(0); setBudgetMax(30); setResults(null); }}
+              onClick={handleReset}
               className="text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               Reset filters

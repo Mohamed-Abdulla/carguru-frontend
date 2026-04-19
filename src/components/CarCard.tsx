@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import { Car } from "@/lib/types";
 import { Shield, Star, Fuel, Zap } from "lucide-react";
 import Link from "next/link";
@@ -41,7 +42,7 @@ function SafetyBadge({ rating }: { rating: number }) {
   );
 }
 
-export default function CarCard({ car, matchScore, matchReasons, showScore = false }: CarCardProps) {
+const CarCard = React.memo(function CarCard({ car, matchScore, matchReasons, showScore = false }: CarCardProps) {
   const efficiency =
     car.fuel_type === "Electric" ? `${car.range_km} km` : car.mileage_kmpl ? `${car.mileage_kmpl} kmpl` : "—";
 
@@ -150,6 +151,8 @@ export default function CarCard({ car, matchScore, matchReasons, showScore = fal
         </div>
       </div>
       </motion.div>
-    </Link>
-  );
+    </Link>)
 }
+)
+
+export default CarCard;
