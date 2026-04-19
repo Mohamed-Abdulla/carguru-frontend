@@ -11,19 +11,39 @@ export default function CTASection() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const [error, setError] = useState<string | null>(null);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    // Send via mailto (opens default mail app) + simulate submission
-    const subject = encodeURIComponent(`CarGuru Enquiry from ${name}`);
-    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`);
-    window.location.href = `mailto:mohamedabdulla@example.com?subject=${subject}&body=${body}`;
-    // Simulate success after brief delay
-    setTimeout(() => {
+    setError(null);
+
+    try {
+      const text = `🚗 *CarGuru Enquiry*\n\n*Name:* ${name}\n*Email:* ${email}\n*Message:* ${message}`;
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_TELEGRAM_API_URL}/sendMessage?chat_id=-891740292&text=${encodeURIComponent(text)}&parse_mode=Markdown`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        },
+      );
+
+      if (!res.ok) throw new Error("Failed to send");
+
       setSubmitted(true);
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch {
+      setError("Something went wrong. Please try again.");
+    } finally {
       setLoading(false);
-    }, 800);
+    }
   }
+
 
   return (
     <section id="contact" className="py-24 scroll-mt-16">
@@ -137,6 +157,9 @@ export default function CTASection() {
                       className="w-full rounded-xl border border-border bg-muted/50 px-4 py-3 text-sm placeholder:text-muted-foreground focus:outline-none focus:border-primary/60 focus:ring-1 focus:ring-primary/30 transition-colors resize-none"
                     />
                   </div>
+                  {error && (
+                    <p className="text-xs text-rose-500 text-center">{error}</p>
+                  )}
                   <button
                     id="cta-submit-btn"
                     type="submit"
