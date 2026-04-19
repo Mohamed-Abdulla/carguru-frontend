@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 import { Menu, X, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -15,6 +16,15 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
+
+  const resolveHref = (href: string) => {
+    // If it's an anchor link
+    if (href.startsWith("#")) {
+      return pathname === "/" ? href : `/${href}`;
+    }
+    return href;
+  };
 
   return (
     <motion.header
@@ -35,11 +45,11 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-6" aria-label="Main navigation">
+          <nav className="hidden md:flex items-center gap-6">
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={resolveHref(link.href)}
                 id={`nav-${link.label.toLowerCase().replace(/\s+/g, "-")}`}
                 className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
               >
@@ -51,7 +61,7 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden md:flex items-center gap-3">
             <Link
-              href="#shortlist"
+              href={resolveHref("#shortlist")}
               id="nav-cta-find"
               className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:opacity-90 transition-opacity"
             >
@@ -60,12 +70,7 @@ export default function Navbar() {
           </div>
 
           {/* Mobile burger */}
-          <button
-            id="nav-mobile-menu-btn"
-            className="md:hidden p-2 text-muted-foreground"
-            onClick={() => setOpen(!open)}
-            aria-label="Toggle menu"
-          >
+          <button className="md:hidden p-2 text-muted-foreground" onClick={() => setOpen(!open)}>
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
@@ -78,15 +83,15 @@ export default function Navbar() {
             {NAV_LINKS.map((link) => (
               <Link
                 key={link.href}
-                href={link.href}
+                href={resolveHref(link.href)}
                 onClick={() => setOpen(false)}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="text-sm font-medium text-muted-foreground hover:text-foreground"
               >
                 {link.label}
               </Link>
             ))}
             <Link
-              href="#shortlist"
+              href={resolveHref("#shortlist")}
               onClick={() => setOpen(false)}
               className="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground text-center"
             >
